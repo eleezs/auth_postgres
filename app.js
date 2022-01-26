@@ -4,7 +4,8 @@ const cors =require('cors')
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const models = require('./models')
+const signUp = require('./routes/signupRoute');
+const login = require('./routes/loginRoute');
 
 const app = express();
 
@@ -43,21 +44,11 @@ sequelize.authenticate().then(() =>{
 
 
 // signup
-app.post('/api/signup', (req, res) => {
-  models.user.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password
-  }).then((user) =>{
-    res.status(200).send({
-      message: 'User was Registered successfully'
-    });
-  }).catch(err => {
-    res.status(500).send({
-      message: err.message
-    })
-  })
-});
+app.post('/api/signup', signUp);
+
+// login
+app.post('/api/login', login)
+
 
 
 
