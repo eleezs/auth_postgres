@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors =require('cors')
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
+const auth = require('./middleware/auth')
+require('dotenv').config();
 
 const signUp = require('./routes/signupRoute');
 const login = require('./routes/loginRoute');
@@ -21,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded ({extended: true }))
 
 
-app.get('/', (req, res) => {
+app.get('/', auth, (req, res) => {
  res.json({message: 'Welcome to food'})
 })
 
@@ -30,7 +32,7 @@ app.get('/', (req, res) => {
 const sequelize = new Sequelize ( 
   'firstDB', 
   'postgres', 
-  'Uche', 
+  process.env.DB_PWD, 
   {
     host: 'localhost',
     dialect: 'postgres'
